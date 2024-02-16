@@ -1,11 +1,16 @@
 import Header from "./components/Header";
-import StartScreen from "./components/StartScreen";
+import StartScreen from "../pages/StartScreen";
+import { GameProvider } from "./contexts/GameContext";
+import Maze from "./components/Maze";
 
 function App() {
   return (
     <div className="app">
-      <Header />
-      <StartScreen />
+      <GameProvider>
+        <Header />
+        {true ? <Maze /> : <StartScreen />}
+        {/* <MazePage /> */}
+      </GameProvider>
     </div>
   );
 }
