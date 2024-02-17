@@ -1,6 +1,8 @@
 import { useEffect } from "react";
+import { useGame } from "../contexts/GameContext";
 
-function Timer({ dispatch, secondsRemaining }) {
+function Timer() {
+  const { dispatch, secondsRemaining } = useGame();
   const mins = Math.floor(secondsRemaining / 60);
   const seconds = secondsRemaining % 60;
   useEffect(
@@ -8,7 +10,6 @@ function Timer({ dispatch, secondsRemaining }) {
       const id = setInterval(function () {
         dispatch({ type: "tick" });
       }, 1000);
-
       return () => clearInterval(id);
     },
     [dispatch]

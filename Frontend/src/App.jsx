@@ -1,16 +1,16 @@
-import Header from "./components/Header";
 import StartScreen from "../pages/StartScreen";
-import { GameProvider } from "./contexts/GameContext";
-import Maze from "./components/Maze";
+import MazePage from "../pages/MazePage";
+import { useGame } from "./contexts/GameContext";
+import FinishScreen from "../pages/FinishScreen";
 
 function App() {
+  const { status } = useGame();
   return (
     <div className="app">
-      <GameProvider>
-        <Header />
-        {true ? <Maze /> : <StartScreen />}
-        {/* <MazePage /> */}
-      </GameProvider>
+      {status === "loading" && <StartScreen />}
+      {status === "active" && <MazePage />}
+      {status === "ready" && <MazePage />}
+      {status === "submit" && <FinishScreen />}
     </div>
   );
 }
