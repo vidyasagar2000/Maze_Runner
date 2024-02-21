@@ -1,9 +1,14 @@
+import Header from "./Header";
+
 function Error({ msg }) {
   return (
-    <p className="error">
-      <span>💥</span>
-      {msg}
-    </p>
+    <>
+      <Header />
+      <p className="error">
+        <span>💥</span>
+        {msg}
+      </p>
+    </>
   );
 }
 

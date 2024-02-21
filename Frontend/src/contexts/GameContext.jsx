@@ -14,7 +14,7 @@ function reducer(state, action) {
     case "start":
       return { ...state, currentMaze: action.payload, status: "active" };
     case "tick":
-      return { ...state, secondsRemaining: state.secondsRemaining + 1 };
+      return { ...state, secondsRemaining: state.secondsRemaining - 1 };
     case "ready":
       return { ...state, status: "ready" };
     case "submit":
@@ -40,11 +40,12 @@ function GameProvider({ children }) {
     { secondsRemaining, currentMaze, points, highScore, status },
     dispatch,
   ] = useReducer(reducer, initialState);
-
-  const [choosenIdx, setChoosenIdx] = useState(0);
+  const [mazeSize, setMazeSize] = useState(4);
+  const [inputString, setInputString] = useState("");
+  const [difficulty, setDifficulty] = useState(4);
 
   function MazeInput() {
-    const randomData = [
+    const EasyData = [
       [
         [0, 0],
         [1, 2],
@@ -64,28 +65,65 @@ function GameProvider({ children }) {
         [2, 1],
         [0, 2],
         [3, 3],
+        [1, 2],
+        [2, 3],
       ],
     ];
-    const n = 7;
-    const m = 7;
+
+    const MediumData = [
+      [
+        [0, 0],
+        [4, 4],
+      ],
+      [
+        [1, 1],
+        [3, 3],
+      ],
+    ];
+    const HardData = [
+      [
+        [0, 0],
+        [5, 5],
+      ],
+      [
+        [1, 1],
+        [4, 4],
+      ],
+    ];
+    const ExtremeData = [
+      [
+        [0, 0],
+        [6, 6],
+      ],
+      [
+        [1, 1],
+        [5, 5],
+      ],
+    ];
+
     const V = [];
 
-    for (let i = 0; i < n; i++) {
-      const row = Array(m).fill(0);
+    for (let i = 0; i < mazeSize; i++) {
+      const row = Array(mazeSize).fill(0);
       V.push(row);
     }
+    const randomData =
+      difficulty === 4
+        ? EasyData
+        : difficulty === 5
+        ? MediumData
+        : difficulty === 6
+        ? HardData
+        : ExtremeData;
     let selectRandomIdx = Math.floor(Math.random() * randomData.length);
-    setChoosenIdx(selectRandomIdx);
-
     for (let i = 0; i < randomData[selectRandomIdx].length; i++) {
       V[randomData[selectRandomIdx][i][0]][
         randomData[selectRandomIdx][i][1]
       ] = 1;
     }
+
     return V;
   }
-
-  function CheckInput({ answerString = "URLT" }) {}
 
   return (
     <GameContext.Provider
@@ -94,12 +132,16 @@ function GameProvider({ children }) {
         currentMaze,
         points,
         highScore,
-        choosenIdx,
         status,
+        inputString,
+        mazeSize,
+        difficulty,
+        setMazeSize,
+        setDifficulty,
+        setInputString,
         dispatch,
         MazeInput,
         reducer,
-        CheckInput,
       }}
     >
       {children}

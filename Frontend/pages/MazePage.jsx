@@ -5,31 +5,34 @@ import SubmitButton from "../src/components/SubmitButton";
 import Footer from "../src/components/Footer";
 import Main from "../src/components/Main";
 import { useGame } from "../src/contexts/GameContext";
+import { useEffect } from "react";
 
 function MazePage() {
-  const { status } = useGame();
+  const { status, inputString, setInputString } = useGame();
+  useEffect(function () {
+    setInputString("");
+  }, []);
   return (
     <div className="mazePage">
       <Header />
-      <Footer>
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <Timer />
-          <SubmitButton />
-        </div>
-      </Footer>
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <Timer />
+        <SubmitButton />
+      </div>
       <Main>
         <Maze />
         <Footer>
-          <form action="/answer" method="post">
+          <form>
             <input
+              value={inputString}
               style={{ fontSize: "30px" }}
               type="text"
-              name="answer"
               placeholder="Your Answer"
+              onChange={(e) => setInputString(e.target.value)}
               disabled={status !== "ready"}
             />
           </form>

@@ -2,9 +2,9 @@ import { useGame } from "../contexts/GameContext";
 import styles from "./Maze.module.css";
 
 function Maze() {
-  const { currentMaze } = useGame();
+  const { currentMaze, status } = useGame();
   return (
-    <div>
+    <div style={{ opacity: status === "ready" ? "0.06" : "" }}>
       <ul style={{ listStyleType: "none" }} className={styles.container}>
         {currentMaze.map((row, rowIndex) => (
           <li key={rowIndex}>
